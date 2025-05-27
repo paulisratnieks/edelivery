@@ -1,0 +1,7 @@
+{
+  "name": "edelivery",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "vue-vite"
+}
