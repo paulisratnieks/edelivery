@@ -9,11 +9,9 @@
 			</ion-toolbar>
 		</ion-header>
 
-		<ion-content>
+		<ion-content v-if="delivery !== undefined">
 			<div class="detail-container">
-				<ion-card class="delivery-detail-card"
-				          :class="{previous: delivery.status === 'Delivered'}"
-				>
+				<ion-card class="delivery-detail-card" :class="{previous: delivery?.status === 'Delivered'}">
 					<ion-card-header>
 						<ion-card-title class="destination-title">
 							{{ delivery.destination }}

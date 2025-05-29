@@ -1,10 +1,13 @@
 import { createRouter, createWebHistory } from '@ionic/vue-router';
 import { RouteRecordRaw } from 'vue-router';
+import ProfilePage from '../views/ProfilePage.vue';
+import DeliveryCreatePage from '../views/DeliveryCreatePage.vue';
 import TabsPage from '../views/TabsPage.vue'
-import RolePage from '@/views/RolePage.vue';
-import ChatListPage from '@/views/ChatListPage.vue';
-import ChatPage from '@/views/ChatPage.vue';
-import ProfilePage from '@/views/ProfilePage.vue';
+import RolePage from '../views/RolePage.vue';
+import ChatListPage from '../views/ChatListPage.vue';
+import ChatPage from '../views/ChatPage.vue';
+import DeliveryListPage from '@/views/DeliveryListPage.vue';
+import DeliveryPage from '@/views/DeliveryPage.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -37,16 +40,16 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: 'customer/deliveries',
-        component: () => import('@/views/DeliveryListPage.vue')
-      },
-      {
-        path: 'customer/deliveries/:id',
-        component: () => import('@/views/DeliveryPage.vue')
+        component: DeliveryListPage,
       },
       {
         path: 'customer/deliveries/create',
-        component: () => import('@/views/DeliveryCreatePage.vue')
-      }
+        component: DeliveryCreatePage,
+      },
+      {
+        path: 'customer/deliveries/:id',
+        component: DeliveryPage,
+      },
     ]
   }
 ]

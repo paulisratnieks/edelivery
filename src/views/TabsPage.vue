@@ -1,4 +1,4 @@
-<template>
+<template v-if="authStore.user.id">
   <ion-page>
     <ion-tabs>
       <ion-router-outlet></ion-router-outlet>
@@ -13,7 +13,7 @@
           <ion-label>Deliveries</ion-label>
         </ion-tab-button>
 
-        <ion-tab-button tab="profile" @click="onClickProfile">
+        <ion-tab-button tab="profile" :href="'/profile/' + authStore.user.id" >
           <ion-icon aria-hidden="true" :icon="personOutline" />
           <ion-label>Profile</ion-label>
         </ion-tab-button>
@@ -24,13 +24,9 @@
 
 <script setup lang="ts">
 import { IonTabBar, IonTabButton, IonTabs, IonLabel, IonIcon, IonPage, IonRouterOutlet } from '@ionic/vue';
-import {ellipse, person, cubeOutline, chatbox, chatboxOutline, personOutline} from 'ionicons/icons';
+import {cubeOutline, chatboxOutline, personOutline} from 'ionicons/icons';
 import {useAuthStore} from '@/stores/auth-store';
-import router from '@/router';
 
 const authStore = useAuthStore();
 
-const onClickProfile = () => {
-	router.push({path: '/profile/' + authStore.user.id});
-};
 </script>

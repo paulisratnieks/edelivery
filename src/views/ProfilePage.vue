@@ -9,11 +9,9 @@
 			</ion-toolbar>
 		</ion-header>
 
-		<ion-content>
+		<ion-content v-if="person !== undefined">
 			<div class="detail-container">
-				<ion-card class="profile-detail-card"
-				          :class="{active: person.status === 'Active'}"
-				>
+				<ion-card class="profile-detail-card" :class="{active: person?.status === 'Active'}">
 					<ion-card-header>
 						<div class="profile-header">
 							<ion-avatar class="profile-avatar">
@@ -60,7 +58,7 @@
 	</ion-page>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {computed} from 'vue';
 import {
 	IonPage,
