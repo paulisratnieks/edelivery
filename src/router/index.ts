@@ -2,6 +2,9 @@ import { createRouter, createWebHistory } from '@ionic/vue-router';
 import { RouteRecordRaw } from 'vue-router';
 import TabsPage from '../views/TabsPage.vue'
 import RolePage from '@/views/RolePage.vue';
+import ChatListPage from '@/views/ChatListPage.vue';
+import ChatPage from '@/views/ChatPage.vue';
+import ProfilePage from '@/views/ProfilePage.vue';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -9,21 +12,41 @@ const routes: Array<RouteRecordRaw> = [
     redirect: '/roles'
   },
   {
-    path: '/roles',
-    component: RolePage,
-  },
-  {
-    path: '/customer/',
+    path: '/',
     component: TabsPage,
     children: [
       {
-        path: '',
+        path: 'roles',
+        component: RolePage,
+      },
+      {
+        path: 'chats',
+        component: ChatListPage,
+      },
+      {
+        path: 'chats/:id',
+        component: ChatPage,
+      },
+      {
+        path: 'profile/:id',
+        component: ProfilePage,
+      },
+      {
+        path: 'customer',
         redirect: '/customer/deliveries'
       },
       {
-        path: 'deliveries',
+        path: 'customer/deliveries',
         component: () => import('@/views/DeliveryListPage.vue')
       },
+      {
+        path: 'customer/deliveries/:id',
+        component: () => import('@/views/DeliveryPage.vue')
+      },
+      {
+        path: 'customer/deliveries/create',
+        component: () => import('@/views/DeliveryCreatePage.vue')
+      }
     ]
   }
 ]

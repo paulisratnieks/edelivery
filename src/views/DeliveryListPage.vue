@@ -11,29 +11,33 @@
 
 		<ion-content>
 			<!-- Ongoing Deliveries Section -->
+			<ion-button class="new-delivery" @click="onClickNewDelivery">
+				<ion-icon slot="start" :icon="add"></ion-icon>
+				New Delivery
+			</ion-button>
 			<div class="section-container">
 				<h2 class="section-title">Ongoing Deliveries</h2>
 
 				<ion-card
-					v-for="delivery in ongoingDeliveries"
+					v-for="delivery in ongoing"
 					:key="delivery.id"
 					class="delivery-card ongoing"
+					@click="onClickCard(delivery.id)"
 				>
 					<ion-card-header>
 						<ion-card-title>{{ delivery.destination }}</ion-card-title>
-						<ion-card-subtitle>Order #{{ delivery.orderId }}</ion-card-subtitle>
 					</ion-card-header>
 
 					<ion-card-content>
 						<div class="delivery-info">
 							<div class="info-row">
 								<ion-icon :icon="locationOutline" class="info-icon"></ion-icon>
-								<span class="info-text">{{ delivery.currentLocation }}</span>
+								<span class="info-text">{{ delivery.toLocation }}</span>
 							</div>
 
 							<div class="info-row">
 								<ion-icon :icon="timeOutline" class="info-icon"></ion-icon>
-								<span class="info-text">ETA: {{ delivery.eta }}</span>
+								<span class="info-text">{{ delivery.eta }}</span>
 							</div>
 
 							<div class="status-container">
@@ -51,9 +55,10 @@
 				<h2 class="section-title">Previous Deliveries</h2>
 
 				<ion-card
-					v-for="delivery in previousDeliveries"
+					v-for="delivery in previous"
 					:key="delivery.id"
 					class="delivery-card previous"
+					@click="onClickCard(delivery.id)"
 				>
 					<ion-card-header>
 						<ion-card-title>{{ delivery.destination }}</ion-card-title>
@@ -64,12 +69,12 @@
 						<div class="delivery-info">
 							<div class="info-row">
 								<ion-icon :icon="locationOutline" class="info-icon"></ion-icon>
-								<span class="info-text">{{ delivery.deliveredTo }}</span>
+								<span class="info-text">{{ delivery.toLocation }}</span>
 							</div>
 
 							<div class="info-row">
 								<ion-icon :icon="calendarOutline" class="info-icon"></ion-icon>
-								<span class="info-text">Delivered: {{ delivery.deliveryDate }}</span>
+								<span class="info-text">Delivered: {{ delivery.date }}</span>
 							</div>
 
 							<div class="status-container">
@@ -102,77 +107,40 @@ import {
 	IonIcon,
 	IonBadge
 } from '@ionic/vue';
-import { locationOutline, timeOutline, calendarOutline } from 'ionicons/icons';
-import { ref } from 'vue';
+import { locationOutline, timeOutline, calendarOutline, add } from 'ionicons/icons';
+import {useDeliveryStore} from '@/stores/delivery-store';
+import router from '@/router';
+import {computed} from 'vue';
 
-// Sample data for ongoing deliveries
-const ongoingDeliveries = ref([
-	{
-		id: 1,
-		orderId: 'D2024001',
-		destination: '123 Main Street, New York',
-		currentLocation: 'Distribution Center - Brooklyn',
-		eta: '2:30 PM',
-		status: 'In Transit'
-	},
-	{
-		id: 2,
-		orderId: 'D2024002',
-		destination: '456 Oak Avenue, Manhattan',
-		currentLocation: 'Out for Delivery',
-		eta: '4:15 PM',
-		status: 'Out for Delivery'
-	},
-	{
-		id: 3,
-		orderId: 'D2024003',
-		destination: '789 Pine Road, Queens',
-		currentLocation: 'Sorting Facility',
-		eta: '6:00 PM',
-		status: 'Processing'
-	}
-]);
+const deliveryStore = useDeliveryStore();
 
-// Sample data for previous deliveries
-const previousDeliveries = ref([
-	{
-		id: 4,
-		orderId: 'D2024004',
-		destination: '321 Elm Street, Bronx',
-		deliveredTo: '321 Elm Street, Bronx',
-		deliveryDate: 'May 25, 2025',
-		status: 'Delivered'
-	},
-	{
-		id: 5,
-		orderId: 'D2024005',
-		destination: '654 Maple Drive, Staten Island',
-		deliveredTo: '654 Maple Drive, Staten Island',
-		deliveryDate: 'May 24, 2025',
-		status: 'Delivered'
-	},
-	{
-		id: 6,
-		orderId: 'D2024006',
-		destination: '987 Cedar Lane, Brooklyn',
-		deliveredTo: '987 Cedar Lane, Brooklyn',
-		deliveryDate: 'May 23, 2025',
-		status: 'Delivered'
-	}
-]);
+const ongoing = computed(() => {
+	return deliveryStore.ongoingDeliveries.toSorted((a, b) => a.id - b.id).reverse()
+})
+
+const previous = computed(() => {
+	return deliveryStore.previousDeliveries.toSorted((a, b) => a.id - b.id).reverse()
+})
 
 const getStatusColor = (status: string) => {
 	switch (status) {
 		case 'In Transit':
 			return 'primary';
-		case 'Out for Delivery':
-			return 'warning';
 		case 'Processing':
 			return 'medium';
 		default:
 			return 'medium';
 	}
 };
+
+const onClickCard = (id: number) => {
+	router.push({path: '/customer/deliveries/' + id});
+};
+
+const onClickNewDelivery = () => {
+	router.push({path: '/customer/deliveries/create'});
+};
+
 </script>
 
 <style scoped>
@@ -197,7 +165,6 @@ const getStatusColor = (status: string) => {
 
 .delivery-card.previous {
 	border-left: 4px solid var(--ion-color-success);
-	opacity: 0.8;
 }
 
 .delivery-info {
@@ -242,5 +209,8 @@ ion-card-title {
 ion-card-subtitle {
 	font-size: 14px;
 	color: var(--ion-color-medium);
+}
+.new-delivery {
+	margin: 16px 0 0 16px;
 }
 </style>

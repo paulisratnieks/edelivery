@@ -60,9 +60,9 @@ const onClickCourierPlatform = () => {
 <style scoped>
 
 .description-text {
-	font-size: 18px;
+	font-size: 20px;
 	text-align: center;
-	margin-bottom: 30px;
+	margin-bottom: 24px;
 	color: var(--ion-color-medium);
 	font-weight: 500;
 }
