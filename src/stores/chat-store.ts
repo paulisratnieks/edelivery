@@ -38,7 +38,7 @@ export const useChatStore = defineStore('chat-store', () => {
 			messages: [
 				{
 					deliveredAt: '27/05/2025 15:13',
-					message: 'Hi! I sorry but I will be late because of traffic',
+					message: 'Hi! I will be late because of traffic',
 					author: 3,
 				},
 			]
